@@ -19,4 +19,14 @@
     <servlet-name>LoginPageServlet</servlet-name>
     <url-pattern>/loginPageServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>LogoutAcknowledgementPage</display-name>
+    <servlet-name>LogoutAcknowledgementPage</servlet-name>
+    <servlet-class>LogoutAcknowledgementPage</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LogoutAcknowledgementPage</servlet-name>
+    <url-pattern>/logout</url-pattern>
+  </servlet-mapping>
 </web-app>
