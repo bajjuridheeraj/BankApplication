@@ -4,45 +4,43 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 import javax.servlet.RequestDispatcher;
-import javax.servlet.Servlet;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
- * Servlet implementation class LoginPageServlet
+ * Servlet implementation class SignUpPage
  */
-public class LoginPageServlet extends HttpServlet {
+public class SignUpPage extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-	/**
-	 * Default constructor. 
-	 */
-	public LoginPageServlet() {
-		super();
-	}
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public SignUpPage() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 
 	/**
 	 * @see Servlet#init(ServletConfig)
 	 */
-	Connection conn = null;
-	public void init(ServletConfig config) throws ServletException {
-		// TODO Auto-generated method stub
+    Connection conn = null;
+	public void init(ServletConfig config) throws ServletException 
+	{
 		ServletContext context = config.getServletContext();
 		String d = context.getInitParameter("driver");
 		String u=context.getInitParameter("url");
 		String us=context.getInitParameter("username");
 		String pwd=context.getInitParameter("password");
-		
 		
 		try{
 			Class.forName(d);
@@ -54,18 +52,11 @@ public class LoginPageServlet extends HttpServlet {
 		}
 	}
 
-	/** 
+	/**
 	 * @see Servlet#destroy()
 	 */
 	public void destroy() {
 		// TODO Auto-generated method stub
-		try{
-			conn.close();
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
 	}
 
 	/**
@@ -73,42 +64,41 @@ public class LoginPageServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{
-		// TODO Auto-generated method stub
-		PrintWriter out = response.getWriter();
-		String uname=request.getParameter("username");
-		String pass=request.getParameter("password");
-
-		try {
-			Statement st = (Statement) conn.createStatement();
-			ResultSet rs = st.executeQuery("select * from login1 where name='"+uname+"' and pass='"+pass+"'");
-
-			if(rs.next())
+		//response.getWriter().println("Sign Up completed successfully");
+		String name1=request.getParameter("name");
+		String username1=request.getParameter("uname");
+		String password1=request.getParameter("password");
+		int balance1=Integer.parseInt(request.getParameter("balance"));
+		
+		try
 		{
-				HttpSession session = request.getSession();
-				if(session!=null)
-					{
-					  session.setAttribute("username", uname);
-					session.setAttribute("password", pass);
-					}
-				
-				//out.println("WELCOME TO OUR WEBSITE");
-				RequestDispatcher rd=request.getRequestDispatcher("/MemberAccountPage.jsp");
-				rd.forward(request, response);
+			
+			PreparedStatement pst = conn.prepareStatement("INSERT INTO register VALUES(?,?,?,?)");
+			pst.setString(1,name1);
+			pst.setString(2,username1);
+			pst.setString(3,password1);
+			pst.setInt(4, balance1);
+			
+			int n =pst.executeUpdate();
+			//this returns int value
+			if(n!=0)
+			{
+				PrintWriter out = response.getWriter();
+				out.println("<center><h1>Sucessfully registered...use your credentials to login!!</h1></center>");
+				out.println("<br>");
+				RequestDispatcher rd=request.getRequestDispatcher("/BankLoginPage.html");
+				rd.include(request, response);
 			}
 			else
 			{
-				out.println("Please check user name / password");
-				RequestDispatcher rd=request.getRequestDispatcher("/BankLoginPage.html");
-				rd.include(request,response);
+				System.out.println("Record is not inserted");
 			}
-		}
-
+		} 
 		catch (SQLException e) 
 		{
-
 			e.printStackTrace();
 		}
 		
 	}
-}
 
+}

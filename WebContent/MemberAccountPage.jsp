@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link rel="stylesheet"
 	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
 <link rel="stylesheet" type="text/css"
@@ -10,15 +11,26 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="./resources/jsFiles/accountPage.js"></script>
-<title>Applicants Page</title>
+	
+	
+<title>Applications Page</title>
 </head>
+
 <body>
+
 	<div class="container-fluid">
 		<div id="top">
-			<input type="button" class="btn btn-danger" value="LogOut" style="float:right;" />
-			<h1 class="text-center">Hi Account Holder</h1>
+		<form action="./logout" method="post">
+			<input type="submit" class="btn btn-danger" value="LogOut" style="float:right;"  onclick="logout"/>
+			</form>
+			<h1 class="text-center">
+			<%  String st = (String)session.getAttribute("username");
+            out.println("<center><h1>Hi "+st+ "</h1></center>"); 
+            %>
+			
+			</h1>
 		</div>
-		<div id="left">
+<div id="left">
 			<ul id="leftList" class="nav nav-pill nav-stacked">
 				<li id="creditLink"><label><u>Credit balance</u></label></li>
 				<li id="debitLink"><label><u>Debit balance</u></label></li>
@@ -35,7 +47,6 @@
 						type="button" name="creditbutton" value="Credit" />
 				</fieldset>
 			</div>
-			<br />
 			<div id="debitid">
 				<fieldset>
 					<legend> Debit Balance into Account</legend>
@@ -99,6 +110,7 @@
 				</table>
 			</div>
 		</div>
+		
 	</div>
 </body>
 </html>
